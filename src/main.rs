@@ -13,6 +13,28 @@ struct GitStatus<'a> {
     renamed: GitStatusElement<'a>
 }
 
+fn parse_status(stat_lns: Vec<&str>) -> GitStatus {
+
+    GitStatus {
+        modified: GitStatusElement {
+            n: 0,
+            items: vec!()
+        },
+        added: GitStatusElement {
+            n: 0,
+            items: vec!()
+        },
+        deleted: GitStatusElement {
+            n: 0,
+            items: vec!()
+        },
+        renamed: GitStatusElement {
+            n: 0,
+            items: vec!()
+        },
+    }
+}
+
 fn status() -> String {
     let output = Command::new("git")
         .arg("status")
