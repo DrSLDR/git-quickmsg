@@ -22,11 +22,22 @@ fn status() -> String {
 
     let stdoutvec: Vec<u8> = output.stdout;
 
+    if stdoutvec.len() == 0 {
+        println!("No output from git!");
+        std::process::exit(1);
+    }
+
     println!("{:?}", stdoutvec);
 
     let outstr: String = stdoutvec.into_iter().map(|x| x as char).collect();
 
     println!("{:?}", outstr);
+
+    let strings: Vec<&str> = outstr.split("\n").collect();
+
+    for s in strings {
+        println!("{}", s);
+    }
 
     "lol".to_string()
 }
