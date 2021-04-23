@@ -42,11 +42,16 @@ fn status() -> String {
         .output()
         .expect("Failed to call git");
 
-    let stdoutvec: Vec<u8> = output.stdout;
+    let mut stdoutvec: Vec<u8> = output.stdout;
 
     if stdoutvec.len() == 0 {
         println!("No output from git!");
         std::process::exit(1);
+    }
+
+    let last_byte: u8 = stdoutvec.pop().unwrap();
+    if last_byte != 10u8 {
+        stdoutvec.push(last_byte);
     }
 
     println!("{:?}", stdoutvec);
