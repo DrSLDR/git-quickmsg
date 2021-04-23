@@ -24,9 +24,9 @@ fn status() -> String {
 
     println!("{:?}", stdoutvec);
 
-    let newvec: Vec<char> = stdoutvec.into_iter().map(|x| x as char).collect();
+    let outstr: String = stdoutvec.into_iter().map(|x| x as char).collect();
 
-    println!("{:?}", newvec);
+    println!("{:?}", outstr);
 
     "lol".to_string()
 }
