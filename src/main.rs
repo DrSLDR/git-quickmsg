@@ -1,6 +1,18 @@
 use std::env;
 use std::process::Command;
 
+struct GitStatusElement<'a> {
+    n: u16,
+    items: Vec<&'a str>
+}
+
+struct GitStatus<'a> {
+    modified: GitStatusElement<'a>,
+    added: GitStatusElement<'a>,
+    deleted: GitStatusElement<'a>,
+    renamed: GitStatusElement<'a>
+}
+
 fn status() -> String {
     let output = Command::new("git")
         .arg("status")
