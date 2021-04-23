@@ -14,6 +14,20 @@ struct GitStatus<'a> {
 }
 
 fn parse_status(stat_lns: Vec<&str>) -> GitStatus {
+    let mut modif: GitStatusElement = GitStatusElement {n: 0, items: vec![]};
+    let mut added: GitStatusElement = GitStatusElement {n: 0, items: vec![]};
+    let mut delet: GitStatusElement = GitStatusElement {n: 0, items: vec![]};
+    let mut renam: GitStatusElement = GitStatusElement {n: 0, items: vec![]};
+
+    for line in stat_lns {
+        let typechar = line.get(0..1).unwrap();
+        let arg = line.get(3..).unwrap();
+        println!("{}-{}", typechar, arg);
+        match typechar {
+            "M" => continue,
+            _   => continue,
+        }
+    }
 
     GitStatus {
         modified: GitStatusElement {
@@ -62,9 +76,11 @@ fn status() -> String {
 
     let strings: Vec<&str> = outstr.split("\n").collect();
 
-    for s in strings {
+    for s in strings.clone() {
         println!("{}", s);
     }
+
+    let status_obj = parse_status(strings);
 
     "lol".to_string()
 }
