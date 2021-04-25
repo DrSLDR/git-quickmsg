@@ -14,10 +14,22 @@ struct GitStatus<'a> {
 }
 
 fn parse_status(stat_lns: Vec<&str>) -> GitStatus {
-    let mut modif: GitStatusElement = GitStatusElement {n: 0, items: Vec::new()};
-    let mut added: GitStatusElement = GitStatusElement {n: 0, items: Vec::new()};
-    let mut delet: GitStatusElement = GitStatusElement {n: 0, items: Vec::new()};
-    let mut renam: GitStatusElement = GitStatusElement {n: 0, items: Vec::new()};
+    let mut modif: GitStatusElement = GitStatusElement {
+        n: 0,
+        items: Vec::new(),
+    };
+    let mut added: GitStatusElement = GitStatusElement {
+        n: 0,
+        items: Vec::new(),
+    };
+    let mut delet: GitStatusElement = GitStatusElement {
+        n: 0,
+        items: Vec::new(),
+    };
+    let mut renam: GitStatusElement = GitStatusElement {
+        n: 0,
+        items: Vec::new(),
+    };
 
     for line in stat_lns {
         let typechar = line.get(0..1).unwrap();
