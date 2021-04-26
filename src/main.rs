@@ -284,7 +284,6 @@ fn main() -> std::io::Result<()> {
         println!("{}", stat_string);
         Ok(())
     } else {
-        let mut pos = 0;
         let data = stat_string.as_bytes();
         let mut predata = String::new();
         let mut fh = OpenOptions::new().read(true).write(true).open(msg_option.unwrap())?;
