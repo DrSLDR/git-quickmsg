@@ -75,9 +75,9 @@ fn status() -> String {
         std::process::exit(1);
     }
 
-    // Strip the trailing newline, if it exists
+    // Strip the trailing null, if it exists
     let last_byte: u8 = stdoutvec.pop().unwrap();
-    if last_byte != 10u8 {
+    if last_byte != 0u8 {
         stdoutvec.push(last_byte);
     }
 
@@ -87,7 +87,7 @@ fn status() -> String {
 
     println!("{:?}", outstr);
 
-    let strings: Vec<&str> = outstr.split("\n").collect();
+    let strings: Vec<&str> = outstr.split("\u{0}").collect();
 
     for s in strings.clone() {
         println!("{}", s);
