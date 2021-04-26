@@ -170,6 +170,15 @@ fn render_status(stat: GitStatus) -> String {
     let sum: u32 = stat.modified.n + stat.added.n + stat.deleted.n + stat.renamed.n;
     let mut retstr: String = "".to_string();
 
+    struct FieldName<'a>(String, &'a GitStatusElement);
+
+    let namelist = [
+        FieldName("Modified".to_string(), &stat.modified),
+        FieldName("Added".to_string(), &stat.added),
+        FieldName("Deleted".to_string(), &stat.deleted),
+        FieldName("Renamed".to_string(), &stat.renamed),
+    ];
+
     if sum == 1 {
         if stat.modified.n > 0 {
             retstr.push_str("Modified ");
@@ -189,29 +198,19 @@ fn render_status(stat: GitStatus) -> String {
     } else if sum > 1 {
         let mut header: Vec<String> = Vec::new();
         let mut head_segment: String = "".to_string();
-        if stat.modified.n > 0 {
-            head_segment.push_str("Mod ");
-            head_segment.push_str(stat.modified.n.to_string().as_str());
-            header.push(head_segment.clone());
-            head_segment.clear();
-        }
-        if stat.added.n > 0 {
-            head_segment.push_str("Add ");
-            head_segment.push_str(stat.added.n.to_string().as_str());
-            header.push(head_segment.clone());
-            head_segment.clear();
-        }
-        if stat.deleted.n > 0 {
-            head_segment.push_str("Del ");
-            head_segment.push_str(stat.deleted.n.to_string().as_str());
-            header.push(head_segment.clone());
-            head_segment.clear();
-        }
-        if stat.renamed.n > 0 {
-            head_segment.push_str("Ren ");
-            head_segment.push_str(stat.renamed.n.to_string().as_str());
-            header.push(head_segment.clone());
-            head_segment.clear();
+
+        for tup in namelist.iter() {
+            match tup {
+                FieldName(name, list) => {
+                    if list.n > 0 {
+                        head_segment.push_str(name.get(0..3).unwrap());
+                        head_segment.push(' ');
+                        head_segment.push_str(list.n.to_string().as_str());
+                        header.push(head_segment.clone());
+                        head_segment.clear();
+                    }
+                }
+            }
         }
 
         retstr.push_str(header.join(", ").as_str());
