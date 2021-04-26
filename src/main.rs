@@ -277,14 +277,15 @@ fn main() -> std::io::Result<()> {
     } else {
         let mut pos = 0;
         let data = stat_string.as_bytes();
-        let mut fh = OpenOptions::new().append(true).open(msg_option.unwrap())?;
+        let mut predata = String::new();
+        let mut fh = OpenOptions::new().read(true).write(true).open(msg_option.unwrap())?;
+        fh.read_to_string(&mut predata)?;
+
         fh.seek(SeekFrom::Start(0))?;
 
-        while pos < data.len() {
-            let written = fh.write(&data[pos..])?;
-            pos += written;
-        }
+        fh.write_all(&data)?;
         fh.write("\n".as_bytes())?;
+        fh.write_all(predata.as_bytes())?;
 
         Ok(())
     }
