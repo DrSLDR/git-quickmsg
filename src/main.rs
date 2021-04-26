@@ -74,6 +74,7 @@ fn status() -> String {
         std::process::exit(1);
     }
 
+    // Strip the trailing newline, if it exists
     let last_byte: u8 = stdoutvec.pop().unwrap();
     if last_byte != 10u8 {
         stdoutvec.push(last_byte);
@@ -81,7 +82,7 @@ fn status() -> String {
 
     println!("{:?}", stdoutvec);
 
-    let outstr: String = stdoutvec.into_iter().map(|x| x as char).collect();
+    let outstr: &str = std::str::from_utf8(&stdoutvec).unwrap();
 
     println!("{:?}", outstr);
 
