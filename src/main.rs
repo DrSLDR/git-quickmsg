@@ -1,4 +1,7 @@
 use std::env;
+use std::fs::OpenOptions;
+use std::io::prelude::*;
+use std::io::SeekFrom;
 use std::process::Command;
 
 struct GitStatusElement {
@@ -254,7 +257,7 @@ fn render_status(stat: GitStatus) -> String {
     retstr
 }
 
-fn main() {
+fn main() -> std::io::Result<()> {
     // Capture the argv
     let mut argv = env::args();
     argv.next();
@@ -270,7 +273,19 @@ fn main() {
     if msg_option == None {
         stat_string.push_str("\n\nQuick-committed");
         println!("{}", stat_string);
+        Ok(())
     } else {
-        // Do some dandy write-to-file shit
+        let mut pos = 0;
+        let data = stat_string.as_bytes();
+        let mut fh = OpenOptions::new().append(true).open(msg_option.unwrap())?;
+        fh.seek(SeekFrom::Start(0))?;
+
+        while pos < data.len() {
+            let written = fh.write(&data[pos..])?;
+            pos += written;
+        }
+        fh.write("\n".as_bytes())?;
+
+        Ok(())
     }
 }
