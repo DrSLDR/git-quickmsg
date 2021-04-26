@@ -141,19 +141,19 @@ fn status() -> GitStatus {
         stdoutvec.push(last_byte);
     }
 
-    if cfg!(debug_assertions){
+    if cfg!(debug_assertions) {
         println!("{:?}", stdoutvec);
     }
 
     let outstr: &str = std::str::from_utf8(&stdoutvec).unwrap();
 
-    if cfg!(debug_assertions){
+    if cfg!(debug_assertions) {
         println!("{:?}", outstr);
     }
 
     let strings: Vec<&str> = outstr.split("\u{0}").collect();
 
-    if cfg!(debug_assertions){
+    if cfg!(debug_assertions) {
         for s in strings.clone() {
             println!("{}", s);
         }
@@ -161,7 +161,7 @@ fn status() -> GitStatus {
 
     let status_obj = parse_status(strings.into_iter().map(|x| String::from(x)).collect());
 
-    if cfg!(debug_assertions){
+    if cfg!(debug_assertions) {
         println!(
             "mod: {}:{:?}\nadd: {}:{:?}\ndel: {}:{:?}\nren: {}:{:?}",
             status_obj.modified.n,
@@ -286,7 +286,10 @@ fn main() -> std::io::Result<()> {
     } else {
         let data = stat_string.as_bytes();
         let mut predata = String::new();
-        let mut fh = OpenOptions::new().read(true).write(true).open(msg_option.unwrap())?;
+        let mut fh = OpenOptions::new()
+            .read(true)
+            .write(true)
+            .open(msg_option.unwrap())?;
         fh.read_to_string(&mut predata)?;
 
         fh.seek(SeekFrom::Start(0))?;
