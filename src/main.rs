@@ -1,19 +1,19 @@
 use std::env;
 use std::process::Command;
 
-struct GitStatusElement<'a> {
+struct GitStatusElement {
     n: u16,
-    items: Vec<&'a str>,
+    items: Vec<String>,
 }
 
-struct GitStatus<'a> {
-    modified: GitStatusElement<'a>,
-    added: GitStatusElement<'a>,
-    deleted: GitStatusElement<'a>,
-    renamed: GitStatusElement<'a>,
+struct GitStatus {
+    modified: GitStatusElement,
+    added: GitStatusElement,
+    deleted: GitStatusElement,
+    renamed: GitStatusElement,
 }
 
-fn parse_status(stat_lns: Vec<&str>) -> GitStatus {
+fn parse_status(stat_lns: Vec<String>) -> GitStatus {
     let mut modif: GitStatusElement = GitStatusElement {
         n: 0,
         items: Vec::new(),
@@ -36,36 +36,36 @@ fn parse_status(stat_lns: Vec<&str>) -> GitStatus {
         if prev_rename {
             renam
                 .items
-                .push(line.split("/").collect::<Vec<&str>>().pop().unwrap());
+                .push(line.split("/").collect::<Vec<&str>>().pop().unwrap().to_string());
             prev_rename = false;
             continue;
         }
         let typechar = line.get(0..1).unwrap();
-        let arg = line.get(3..).unwrap();
+        let arg = line.get(3..).unwrap().to_string();
         match typechar {
             "M" => {
                 modif.n += 1;
                 modif
                     .items
-                    .push(arg.split("/").collect::<Vec<&str>>().pop().unwrap());
+                    .push(arg.split("/").collect::<Vec<&str>>().pop().unwrap().to_string());
             }
             "A" => {
                 added.n += 1;
                 added
                     .items
-                    .push(arg.split("/").collect::<Vec<&str>>().pop().unwrap());
+                    .push(arg.split("/").collect::<Vec<&str>>().pop().unwrap().to_string());
             }
             "D" => {
                 delet.n += 1;
                 delet
                     .items
-                    .push(arg.split("/").collect::<Vec<&str>>().pop().unwrap());
+                    .push(arg.split("/").collect::<Vec<&str>>().pop().unwrap().to_string());
             }
             "R" => {
                 renam.n += 1;
                 renam
                     .items
-                    .push(arg.split("/").collect::<Vec<&str>>().pop().unwrap());
+                    .push(arg.split("/").collect::<Vec<&str>>().pop().unwrap().to_string());
                 prev_rename = true;
             }
             _ => continue,
@@ -92,7 +92,7 @@ fn parse_status(stat_lns: Vec<&str>) -> GitStatus {
     }
 }
 
-fn status() -> String {
+fn status() -> GitStatus {
     let output = Command::new("git")
         .arg("status")
         .arg("--porcelain=1")
@@ -129,9 +129,11 @@ fn status() -> String {
         println!("{}", s);
     }
 
-    let status_obj = parse_status(strings);
+    let status_obj = parse_status(strings.into_iter().map(|x| String::from(x)).collect());
 
-    "lol".to_string()
+    println!("mod: {}:{:?}\nadd: {}:{:?}\ndel: {}:{:?}\nren: {}:{:?}", status_obj.modified.n, status_obj.modified.items, status_obj.added.n, status_obj.added.items, status_obj.deleted.n, status_obj.deleted.items, status_obj.renamed.n, status_obj.renamed.items);
+
+    status_obj
 }
 
 fn main() {
