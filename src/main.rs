@@ -2,7 +2,7 @@ use std::env;
 use std::process::Command;
 
 struct GitStatusElement {
-    n: u16,
+    n: u32,
     items: Vec<String>,
 }
 
@@ -166,14 +166,34 @@ fn status() -> GitStatus {
     status_obj
 }
 
+fn render_status(stat: GitStatus) -> String {
+    let sum: u32 = stat.modified.n + stat.added.n + stat.deleted.n + stat.renamed.n;
+
+    if sum == 0 {
+        return "".to_string()
+    }
+
+    "lul".to_string()
+}
+
 fn main() {
     // Capture the argv
     let mut argv = env::args();
     argv.next();
     let msg_option: Option<String> = argv.next();
-    if msg_option == None {
-        println!("NO COMMIT MESSAGE FILE PASSED");
-    }
 
     let git_status = status();
+    let mut stat_string = render_status(git_status);
+
+    if stat_string.len() == 0 {
+        std::process::exit(2);
+    }
+
+    if msg_option == None {
+        stat_string.push_str("\n\nQuick-committed");
+        println!("{}", stat_string);
+    }
+    else {
+        // Do some dandy write-to-file shit
+    }
 }
