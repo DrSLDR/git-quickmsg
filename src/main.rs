@@ -63,7 +63,8 @@ fn parse_status(stat_lns: Vec<&str>) -> GitStatus {
 fn status() -> String {
     let output = Command::new("git")
         .arg("status")
-        .arg("--porcelain")
+        .arg("--porcelain=1")
+        .arg("-z")
         .output()
         .expect("Failed to call git");
 
