@@ -214,6 +214,41 @@ fn render_status(stat: GitStatus) -> String {
         }
 
         retstr.push_str(header.join(", ").as_str());
+
+        if sum <= 8 {
+            retstr.push_str("\n");
+            let mut to_name: String = "".to_string();
+            for tup in namelist.iter() {
+                match tup {
+                    FieldName(name, list) => {
+                        for item in list.items.iter() {
+                            if name == "Renamed" && to_name.len() == 0 {
+                                retstr.push('\n');
+                                to_name = item.clone();
+                                continue;
+                            }
+                            if to_name.len() > 0 {
+                                if *item == to_name {
+                                    retstr.push_str("Moved ");
+                                    retstr.push_str(item);
+                                } else {
+                                    retstr.push_str("Renamed ");
+                                    retstr.push_str(item);
+                                    retstr.push_str(" => ");
+                                    retstr.push_str(to_name.as_str());
+                                }
+                                to_name.clear();
+                                continue;
+                            }
+                            retstr.push('\n');
+                            retstr.push_str(name.as_str());
+                            retstr.push(' ');
+                            retstr.push_str(item);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     retstr
