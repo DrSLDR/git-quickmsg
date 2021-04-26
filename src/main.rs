@@ -115,7 +115,8 @@ fn status() -> String {
 
     println!("{:?}", stdoutvec);
 
-    let outstr: &str = std::str::from_utf8(&stdoutvec).unwrap();
+    // let outstr: &str = std::str::from_utf8(&stdoutvec).unwrap();
+    let outstr: &str = "R  LICENSE.bak\u{0}LICENSE\u{0}MM src/main.rs\u{0}A  foo.bar\u{0}D  bar.foo\u{0}M  bar.bar\u{0} M foo.foo";
 
     println!("{:?}", outstr);
 
