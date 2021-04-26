@@ -30,13 +30,40 @@ fn parse_status(stat_lns: Vec<&str>) -> GitStatus {
         n: 0,
         items: Vec::new(),
     };
+    let mut prev_rename: bool = false;
 
     for line in stat_lns {
+        if prev_rename {
+            renam.items.push(line.split("/").collect::<Vec<&str>>().pop().unwrap());
+            prev_rename = false;
+            continue;
+        }
         let typechar = line.get(0..1).unwrap();
+        println!("{}", typechar);
         let arg = line.get(3..).unwrap();
+        println!("{}", arg);
         match typechar {
-            "M" => continue,
-            _   => continue,
+            "M" => {
+                modif.n += 1;
+                modif
+                    .items
+                    .push(arg.split("/").collect::<Vec<&str>>().pop().unwrap());
+                println!("{}:{:?}", modif.n, modif.items);
+            },
+            "A" => {
+                added.n += 1;
+                added.items.push(arg.split("/").collect::<Vec<&str>>().pop().unwrap());
+            },
+            "D" => {
+                delet.n += 1;
+                delet.items.push(arg.split("/").collect::<Vec<&str>>().pop().unwrap());
+            },
+            "R" => {
+                renam.n += 1;
+                renam.items.push(arg.split("/").collect::<Vec<&str>>().pop().unwrap());
+                prev_rename = true;
+            }
+            _ => continue,
         }
     }
 
