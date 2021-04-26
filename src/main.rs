@@ -273,15 +273,14 @@ fn main() -> std::io::Result<()> {
     let msg_option: Option<String> = argv.next();
 
     let git_status = status();
-    let mut stat_string = render_status(git_status);
+    let stat_string = render_status(git_status);
 
     if stat_string.len() == 0 {
         std::process::exit(2);
     }
 
     if msg_option == None {
-        stat_string.push_str("\n\nQuick-committed");
-        println!("{}", stat_string);
+        println!("\n\nQuick-committed");
         Ok(())
     } else {
         let data = stat_string.as_bytes();
