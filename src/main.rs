@@ -102,6 +102,10 @@ fn status() -> String {
 
     let mut stdoutvec: Vec<u8> = output.stdout;
 
+    if cfg!(debug_assertions) {
+        stdoutvec = b"R  LICENSE.bak\0LICENSE\0MM src/main.rs\0A  foo.bar\0D  bar.foo\0M  bar.bar\0 M foo.foo\0R  path/path/path/foobar\0path/foobar".to_vec();
+    }
+
     if stdoutvec.len() == 0 {
         println!("No output from git!");
         std::process::exit(1);
@@ -115,8 +119,7 @@ fn status() -> String {
 
     println!("{:?}", stdoutvec);
 
-    // let outstr: &str = std::str::from_utf8(&stdoutvec).unwrap();
-    let outstr: &str = "R  LICENSE.bak\u{0}LICENSE\u{0}MM src/main.rs\u{0}A  foo.bar\u{0}D  bar.foo\u{0}M  bar.bar\u{0} M foo.foo";
+    let outstr: &str = std::str::from_utf8(&stdoutvec).unwrap();
 
     println!("{:?}", outstr);
 
