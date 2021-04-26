@@ -69,20 +69,20 @@ fn parse_status(stat_lns: Vec<&str>) -> GitStatus {
 
     GitStatus {
         modified: GitStatusElement {
-            n: 0,
-            items: vec!()
+            n: modif.n,
+            items: modif.items,
         },
         added: GitStatusElement {
-            n: 0,
-            items: vec!()
+            n: added.n,
+            items: added.items,
         },
         deleted: GitStatusElement {
-            n: 0,
-            items: vec!()
+            n: delet.n,
+            items: delet.items,
         },
         renamed: GitStatusElement {
-            n: 0,
-            items: vec!()
+            n: renam.n,
+            items: renam.items,
         },
     }
 }
