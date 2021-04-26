@@ -34,9 +34,13 @@ fn parse_status(stat_lns: Vec<String>) -> GitStatus {
 
     for line in stat_lns {
         if prev_rename {
-            renam
-                .items
-                .push(line.split("/").collect::<Vec<&str>>().pop().unwrap().to_string());
+            renam.items.push(
+                line.split("/")
+                    .collect::<Vec<&str>>()
+                    .pop()
+                    .unwrap()
+                    .to_string(),
+            );
             prev_rename = false;
             continue;
         }
@@ -45,27 +49,43 @@ fn parse_status(stat_lns: Vec<String>) -> GitStatus {
         match typechar {
             "M" => {
                 modif.n += 1;
-                modif
-                    .items
-                    .push(arg.split("/").collect::<Vec<&str>>().pop().unwrap().to_string());
+                modif.items.push(
+                    arg.split("/")
+                        .collect::<Vec<&str>>()
+                        .pop()
+                        .unwrap()
+                        .to_string(),
+                );
             }
             "A" => {
                 added.n += 1;
-                added
-                    .items
-                    .push(arg.split("/").collect::<Vec<&str>>().pop().unwrap().to_string());
+                added.items.push(
+                    arg.split("/")
+                        .collect::<Vec<&str>>()
+                        .pop()
+                        .unwrap()
+                        .to_string(),
+                );
             }
             "D" => {
                 delet.n += 1;
-                delet
-                    .items
-                    .push(arg.split("/").collect::<Vec<&str>>().pop().unwrap().to_string());
+                delet.items.push(
+                    arg.split("/")
+                        .collect::<Vec<&str>>()
+                        .pop()
+                        .unwrap()
+                        .to_string(),
+                );
             }
             "R" => {
                 renam.n += 1;
-                renam
-                    .items
-                    .push(arg.split("/").collect::<Vec<&str>>().pop().unwrap().to_string());
+                renam.items.push(
+                    arg.split("/")
+                        .collect::<Vec<&str>>()
+                        .pop()
+                        .unwrap()
+                        .to_string(),
+                );
                 prev_rename = true;
             }
             _ => continue,
@@ -131,7 +151,17 @@ fn status() -> GitStatus {
 
     let status_obj = parse_status(strings.into_iter().map(|x| String::from(x)).collect());
 
-    println!("mod: {}:{:?}\nadd: {}:{:?}\ndel: {}:{:?}\nren: {}:{:?}", status_obj.modified.n, status_obj.modified.items, status_obj.added.n, status_obj.added.items, status_obj.deleted.n, status_obj.deleted.items, status_obj.renamed.n, status_obj.renamed.items);
+    println!(
+        "mod: {}:{:?}\nadd: {}:{:?}\ndel: {}:{:?}\nren: {}:{:?}",
+        status_obj.modified.n,
+        status_obj.modified.items,
+        status_obj.added.n,
+        status_obj.added.items,
+        status_obj.deleted.n,
+        status_obj.deleted.items,
+        status_obj.renamed.n,
+        status_obj.renamed.items
+    );
 
     status_obj
 }
