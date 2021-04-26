@@ -168,12 +168,30 @@ fn status() -> GitStatus {
 
 fn render_status(stat: GitStatus) -> String {
     let sum: u32 = stat.modified.n + stat.added.n + stat.deleted.n + stat.renamed.n;
+    let mut retstr: String = "".to_string();
 
-    if sum == 0 {
-        return "".to_string()
+    if sum == 1 {
+        if stat.modified.n > 0 {
+            retstr.push_str("Modified ");
+            retstr.push_str(stat.modified.items[0].as_str());
+        }
+        else if stat.added.n > 0 {
+            retstr.push_str("Added ");
+            retstr.push_str(stat.added.items[0].as_str());
+        }
+        else if stat.deleted.n > 0 {
+            retstr.push_str("Deleted ");
+            retstr.push_str(stat.deleted.items[0].as_str());
+        }
+        else if stat.renamed.n > 0 {
+            retstr.push_str("Renamed ");
+            retstr.push_str(stat.renamed.items[1].as_str());
+            retstr.push_str(" to ");
+            retstr.push_str(stat.renamed.items[0].as_str());
+        }
     }
 
-    "lul".to_string()
+    retstr
 }
 
 fn main() {
