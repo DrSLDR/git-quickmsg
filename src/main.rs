@@ -280,7 +280,7 @@ fn main() -> std::io::Result<()> {
     }
 
     if msg_option == None {
-        println!("\n\nQuick-committed");
+        println!("Quick-committed");
         Ok(())
     } else {
         let data = stat_string.as_bytes();
@@ -294,7 +294,7 @@ fn main() -> std::io::Result<()> {
         fh.seek(SeekFrom::Start(0))?;
 
         fh.write_all(&data)?;
-        fh.write("\n".as_bytes())?;
+        fh.write("\n\n".as_bytes())?;
         fh.write_all(predata.as_bytes())?;
 
         Ok(())
