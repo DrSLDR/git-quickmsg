@@ -126,6 +126,7 @@ fn status() -> GitStatus {
     let mut stdoutvec: Vec<u8> = output.stdout;
 
     if cfg!(debug_assertions) {
+        // stdoutvec = b"MM src/main.rs\0".to_vec();
         stdoutvec = b"R  LICENSE.bak\0LICENSE\0MM src/main.rs\0A  foo.bar\0D  bar.foo\0M  bar.bar\0 M foo.foo\0R  path/path/path/foobar\0path/foobar".to_vec();
     }
 
@@ -140,31 +141,39 @@ fn status() -> GitStatus {
         stdoutvec.push(last_byte);
     }
 
-    println!("{:?}", stdoutvec);
+    if cfg!(debug_assertions){
+        println!("{:?}", stdoutvec);
+    }
 
     let outstr: &str = std::str::from_utf8(&stdoutvec).unwrap();
 
-    println!("{:?}", outstr);
+    if cfg!(debug_assertions){
+        println!("{:?}", outstr);
+    }
 
     let strings: Vec<&str> = outstr.split("\u{0}").collect();
 
-    for s in strings.clone() {
-        println!("{}", s);
+    if cfg!(debug_assertions){
+        for s in strings.clone() {
+            println!("{}", s);
+        }
     }
 
     let status_obj = parse_status(strings.into_iter().map(|x| String::from(x)).collect());
 
-    println!(
-        "mod: {}:{:?}\nadd: {}:{:?}\ndel: {}:{:?}\nren: {}:{:?}",
-        status_obj.modified.n,
-        status_obj.modified.items,
-        status_obj.added.n,
-        status_obj.added.items,
-        status_obj.deleted.n,
-        status_obj.deleted.items,
-        status_obj.renamed.n,
-        status_obj.renamed.items
-    );
+    if cfg!(debug_assertions){
+        println!(
+            "mod: {}:{:?}\nadd: {}:{:?}\ndel: {}:{:?}\nren: {}:{:?}",
+            status_obj.modified.n,
+            status_obj.modified.items,
+            status_obj.added.n,
+            status_obj.added.items,
+            status_obj.deleted.n,
+            status_obj.deleted.items,
+            status_obj.renamed.n,
+            status_obj.renamed.items
+        );
+    }
 
     status_obj
 }
