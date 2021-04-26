@@ -174,16 +174,13 @@ fn render_status(stat: GitStatus) -> String {
         if stat.modified.n > 0 {
             retstr.push_str("Modified ");
             retstr.push_str(stat.modified.items[0].as_str());
-        }
-        else if stat.added.n > 0 {
+        } else if stat.added.n > 0 {
             retstr.push_str("Added ");
             retstr.push_str(stat.added.items[0].as_str());
-        }
-        else if stat.deleted.n > 0 {
+        } else if stat.deleted.n > 0 {
             retstr.push_str("Deleted ");
             retstr.push_str(stat.deleted.items[0].as_str());
-        }
-        else if stat.renamed.n > 0 {
+        } else if stat.renamed.n > 0 {
             retstr.push_str("Renamed ");
             retstr.push_str(stat.renamed.items[1].as_str());
             retstr.push_str(" to ");
@@ -210,8 +207,7 @@ fn main() {
     if msg_option == None {
         stat_string.push_str("\n\nQuick-committed");
         println!("{}", stat_string);
-    }
-    else {
+    } else {
         // Do some dandy write-to-file shit
     }
 }
