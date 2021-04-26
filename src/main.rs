@@ -186,6 +186,35 @@ fn render_status(stat: GitStatus) -> String {
             retstr.push_str(" to ");
             retstr.push_str(stat.renamed.items[0].as_str());
         }
+    } else if sum > 1 {
+        let mut header: Vec<String> = Vec::new();
+        let mut head_segment: String = "".to_string();
+        if stat.modified.n > 0 {
+            head_segment.push_str("Mod ");
+            head_segment.push_str(stat.modified.n.to_string().as_str());
+            header.push(head_segment.clone());
+            head_segment.clear();
+        }
+        if stat.added.n > 0 {
+            head_segment.push_str("Add ");
+            head_segment.push_str(stat.added.n.to_string().as_str());
+            header.push(head_segment.clone());
+            head_segment.clear();
+        }
+        if stat.deleted.n > 0 {
+            head_segment.push_str("Del ");
+            head_segment.push_str(stat.deleted.n.to_string().as_str());
+            header.push(head_segment.clone());
+            head_segment.clear();
+        }
+        if stat.renamed.n > 0 {
+            head_segment.push_str("Ren ");
+            head_segment.push_str(stat.renamed.n.to_string().as_str());
+            header.push(head_segment.clone());
+            head_segment.clear();
+        }
+
+        retstr.push_str(header.join(", ").as_str());
     }
 
     retstr
