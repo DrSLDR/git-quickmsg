@@ -280,7 +280,7 @@ fn main() -> std::io::Result<()> {
     }
 
     if msg_option == None {
-        println!("Quick-committed");
+        println!("{}", stat_string);
         Ok(())
     } else {
         let data = stat_string.as_bytes();
