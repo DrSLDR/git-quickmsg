@@ -196,13 +196,19 @@ fn render_status(stat: GitStatus) -> String {
             match tup {
                 FieldName(name, list) => {
                     if list.n > 0 {
-                        retstr.push_str(name.as_str());
-                        retstr.push(' ');
-                        if name == "Renamed" {
-                            retstr.push_str(list.items[1].as_str());
-                            retstr.push_str(" to ");
+                        if name == "Renamed" && list.items[1] == list.items[0] {
+                            retstr.push_str("Moved ");
+                            retstr.push_str(list.items[0].as_str());
                         }
-                        retstr.push_str(list.items[0].as_str());
+                        else {
+                            retstr.push_str(name.as_str());
+                            retstr.push(' ');
+                            if name == "Renamed" {
+                                retstr.push_str(list.items[1].as_str());
+                                retstr.push_str(" to ");
+                            }
+                            retstr.push_str(list.items[0].as_str());
+                        }
                     }
                 }
             }
